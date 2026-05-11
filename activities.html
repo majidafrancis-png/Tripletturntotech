@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activities | Triple T Academy</title>
+    <link rel="icon" type="image/jpeg" href="logo.jpeg">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ttt-dark: #1A1A1A;
+            --ttt-blue: #0072BC;
+            --ttt-green: #7DB942;
+            --ttt-teal-grad: linear-gradient(90deg, #7DB942 0%, #0096D6 100%);
+            --ttt-line-grad: linear-gradient(180deg, #7DB942 0%, #0072BC 100%);
+            --ttt-light: #F8F9FA;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--ttt-dark);
+            line-height: 1.6;
+            background-color: #fff;
+        }
+
+        /* ─── NAVIGATION ─── */
+        #nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 90px;
+            background: rgba(255,255,255,0.97);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5%;
+            transition: top 0.3s, box-shadow 0.3s;
+            z-index: 1000;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+        }
+
+        .logo-container img {
+            height: 70px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .nav-items {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-items a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            font-size: 15px;
+            transition: color 0.2s;
+            letter-spacing: 0.2px;
+        }
+
+        .nav-items a:hover { color: var(--ttt-blue); }
+        .nav-items a.active { color: var(--ttt-blue); }
+
+        .btn-login {
+            background: var(--ttt-teal-grad);
+            color: white;
+            border: none;
+            padding: 11px 26px;
+            border-radius: 25px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(0,114,188,0.25);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(0,114,188,0.35);
+        }
+
+        /* ─── HAMBURGER BUTTON ─── */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            gap: 5px;
+            width: 40px; height: 40px;
+            background: none; border: none;
+            cursor: pointer; padding: 4px;
+            border-radius: 8px;
+            transition: background 0.2s;
+            z-index: 1100;
+        }
+
+        .hamburger:hover { background: rgba(0,114,188,0.08); }
+
+        .hamburger span {
+            display: block;
+            width: 24px; height: 2.5px;
+            background: var(--ttt-dark);
+            border-radius: 2px;
+            transition: transform 0.35s cubic-bezier(.4,0,.2,1),
+                        opacity 0.2s,
+                        width 0.3s;
+            transform-origin: center;
+        }
+
+        .hamburger.open span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; width: 0; }
+        .hamburger.open span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+
+        /* ─── MOBILE DRAWER ─── */
+        .mobile-drawer {
+            display: none;
+            position: fixed;
+            top: 90px; left: 0; right: 0;
+            background: rgba(255,255,255,0.98);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.10);
+            z-index: 999;
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.38s cubic-bezier(.4,0,.2,1), padding 0.3s;
+        }
+
+        .mobile-drawer.open {
+            max-height: 500px;
+            padding: 16px 0 24px;
+        }
+
+        .mobile-drawer ul {
+            list-style: none;
+            padding: 0 5%;
+        }
+
+        .mobile-drawer ul li {
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .mobile-drawer ul li:last-child { border-bottom: none; }
+
+        .mobile-drawer ul li a {
+            display: block;
+            padding: 14px 4px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            font-size: 15px;
+            transition: color 0.2s, padding-left 0.2s;
+        }
+
+        .mobile-drawer ul li a:hover,
+        .mobile-drawer ul li a.active {
+            color: var(--ttt-blue);
+            padding-left: 10px;
+        }
+
+        .mobile-drawer .drawer-login {
+            margin: 16px 5% 0;
+        }
+
+        .mobile-drawer .drawer-login button {
+            width: 100%;
+            background: var(--ttt-teal-grad);
+            color: white; border: none;
+            padding: 13px 26px; border-radius: 25px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px; font-weight: 600; cursor: pointer;
+            box-shadow: 0 4px 14px rgba(0,114,188,0.2);
+        }
+
+        /* ─── HERO SECTION ─── */
+        .featured-header {
+            min-height: 90vh;
+            background: linear-gradient(160deg, #f0f9ff 0%, #f7fbf2 50%, #e8f5ff 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 50px;
+            margin-top: 90px;
+            padding: 80px 5%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-content { flex: 1; z-index: 2; }
+
+        .header-content .eyebrow {
+            font-size: 11px; font-weight: 600;
+            letter-spacing: 3px; text-transform: uppercase;
+            color: var(--ttt-blue); margin-bottom: 18px;
+            display: flex; align-items: center; gap: 10px;
+        }
+
+        .header-content .eyebrow::before {
+            content: ''; width: 30px; height: 2px;
+            background: var(--ttt-teal-grad); border-radius: 1px;
+        }
+
+        .header-content h1 {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 800; color: var(--ttt-dark);
+            line-height: 1.1; letter-spacing: -1.5px;
+            margin-bottom: 22px;
+        }
+
+        .header-content h1 span {
+            background: var(--ttt-teal-grad);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-image { flex: 1; text-align: center; z-index: 2; }
+        .header-image img {
+            width: 100%; max-width: 500px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            border-bottom: 5px solid var(--ttt-green);
+        }
+
+        /* ─── TIMELINE ─── */
+        .timeline-container {
+            position: relative;
+            max-width: 1050px;
+            margin: 90px auto;
+            padding: 20px;
+        }
+
+        .timeline-line {
+            position: absolute; left: 50%; top: 0; bottom: 0;
+            width: 4px; background: var(--ttt-line-grad);
+            transform: translateX(-50%); border-radius: 2px; z-index: 1;
+        }
+
+        .activity-row {
+            display: flex; justify-content: space-between;
+            align-items: center; margin-bottom: 100px;
+            position: relative; z-index: 2; gap: 40px;
+        }
+
+        .activity-row:nth-child(even) { flex-direction: row-reverse; }
+
+        .activity-info {
+            width: 45%; padding: 35px;
+            background: white; border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.03);
+            transition: transform 0.3s;
+        }
+
+        .activity-info:hover { transform: translateY(-5px); }
+
+        .activity-tag {
+            display: inline-block;
+            background: linear-gradient(90deg, rgba(125,185,66,0.1), rgba(0,150,214,0.1));
+            color: var(--ttt-blue); font-size: 11px; font-weight: 700;
+            letter-spacing: 1.5px; text-transform: uppercase;
+            padding: 5px 15px; border-radius: 20px; margin-bottom: 15px;
+        }
+
+        .activity-info h2 { color: var(--ttt-dark); font-size: 22px; margin-bottom: 12px; }
+
+        .activity-img-box { width: 45%; }
+        .activity-img-box img {
+            width: 100%; border-radius: 20px;
+            box-shadow: 0 15px 45px rgba(0,0,0,0.1);
+            border-bottom: 5px solid var(--ttt-green);
+        }
+
+        .activity-num {
+            position: absolute; left: 50%; transform: translateX(-50%);
+            width: 55px; height: 55px; background: white;
+            border: 4px solid var(--ttt-blue); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800; color: var(--ttt-blue); z-index: 3;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        /* ─── COMING SOON MODAL ─── */
+        .modal-overlay {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,0.45); z-index: 9999;
+            align-items: center; justify-content: center;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-box {
+            background: white; border-radius: 20px; padding: 44px 40px;
+            text-align: center; max-width: 380px; width: 90%; position: relative;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+        .modal-box::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px;
+            background: var(--ttt-teal-grad); border-radius: 20px 20px 0 0;
+        }
+        .modal-icon { font-size: 3rem; margin-bottom: 14px; }
+        .modal-box h2 {
+            font-size: 22px; font-weight: 800; color: var(--ttt-dark); margin-bottom: 10px;
+        }
+        .modal-box p {
+            font-size: 14px; color: #666; line-height: 1.7; margin-bottom: 24px;
+        }
+        .modal-close {
+            background: var(--ttt-teal-grad); color: white; border: none;
+            padding: 12px 30px; border-radius: 25px;
+            font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer;
+        }
+
+        /* ─── FOOTER ─── */
+        .footer { background: #0F1A2A; color: #ccc; padding: 70px 5% 0; }
+        .footer-top {
+            display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 50px; padding-bottom: 50px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        .footer-logo-img { height: 60px; width: auto; object-fit: contain; margin-bottom: 14px; display: block; }
+        .footer-brand p { font-size: 13px; color: #888; line-height: 1.8; max-width: 280px; margin-bottom: 24px; }
+        .footer-social { display: flex; gap: 10px; flex-wrap: wrap; }
+        .social-btn {
+            height: 36px; padding: 0 14px; border-radius: 8px;
+            background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
+            display: flex; align-items: center; gap: 6px; color: #ccc;
+            font-family: 'Poppins', sans-serif; font-size: 12px; font-weight: 600;
+            text-decoration: none; transition: background 0.2s, color 0.2s, border-color 0.2s;
+            white-space: nowrap;
+        }
+        .social-btn:hover { color: white; border-color: transparent; }
+        .social-btn.fb:hover    { background: #1877F2; }
+        .social-btn.yt:hover    { background: #FF0000; }
+        .social-btn.insta:hover { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+
+        .footer-col h4 {
+            font-size: 12px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 2px; color: #fff; margin-bottom: 20px;
+        }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 12px; }
+        .footer-col ul li a { text-decoration: none; color: #888; font-size: 13.5px; transition: color 0.2s; }
+        .footer-col ul li a:hover { color: #4DB8FF; }
+
+        .footer-bottom { padding: 26px 0; text-align: center; }
+        .footer-bottom p { font-size: 13px; color: #888; }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 768px) {
+            .nav-items { display: none; }
+            .btn-login  { display: none; }
+            .hamburger  { display: flex; }
+            .mobile-drawer { display: block; }
+
+            .featured-header { flex-direction: column; text-align: center; }
+            .header-image { display: none; }
+
+            .timeline-line { left: 20px; }
+            .activity-row,
+            .activity-row:nth-child(even) { flex-direction: column; align-items: flex-start; }
+            .activity-info, .activity-img-box { width: 100%; margin-left: 40px; }
+            .activity-num { left: 20px; }
+
+            .footer-top { grid-template-columns: 1fr 1fr; gap: 30px; }
+        }
+
+        @media (max-width: 480px) {
+            .footer-top { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ─── NAVIGATION ─── -->
+    <header id="nav">
+        <a href="index.html" class="logo-container">
+            <img src="logo.jpeg" alt="Triple T Academy">
+        </a>
+
+        <!-- Desktop nav -->
+        <ul class="nav-items">
+		<li><a href="index.html">Home</a></li>
+            <li><a href="curriculum.html">Curriculum</a></li>
+            <li><a href="activities.html" class="active">Activities</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="certifications.html">Certifications</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact us</a></li>
+        </ul>
+
+        <!-- Desktop login -->
+        <button class="btn-login" onclick="openModal()">Login</button>
+
+        <!-- Hamburger (mobile only) -->
+        <button class="hamburger" id="hamburgerBtn" aria-label="Open menu" onclick="toggleDrawer()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </header>
+
+    <!-- ─── MOBILE DRAWER ─── -->
+    <nav class="mobile-drawer" id="mobileDrawer">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="curriculum.html">Curriculum</a></li>
+            <li><a href="activities.html" class="active">Activities</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="certifications.html">Certifications</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact us</a></li>
+        </ul>
+        <div class="drawer-login">
+            <button onclick="openModal(); closeDrawer();">Login</button>
+        </div>
+    </nav>
+
+    <!-- ─── COMING SOON MODAL ─── -->
+    <div class="modal-overlay" id="comingSoonModal" onclick="if(event.target===this) closeModal()">
+        <div class="modal-box">
+            <div class="modal-icon">🚀</div>
+            <h2>Coming Soon!</h2>
+            <p>Our student portal is currently under development. Stay tuned — it will be available very soon!</p>
+            <button class="modal-close" onclick="closeModal()">Got it!</button>
+        </div>
+    </div>
+
+    <!-- ─── HERO ─── -->
+    <section class="featured-header">
+        <div class="header-content">
+            <div class="eyebrow">Engagement in Action </div>
+            <h1>From Passive Learning <span>To Active Creation</span></h1>
+            <p>Our programs are designed to transform students from digital consumers into digital architects. We provide the tools, the logic, and the platform for the next generation of tech leaders to shine.</p>
+        </div>
+        <div class="header-image">
+            <img src="activities page1.png" alt="Featured Activity">
+        </div>
+    </section>
+
+    <!-- ─── TIMELINE ─── -->
+    <div class="timeline-container">
+        <div class="timeline-line"></div>
+
+        <div class="activity-row">
+            <div class="activity-num">01</div>
+            <div class="activity-info">
+                <span class="activity-tag">Project-Based Innovation Workshops</span>
+                <h2>Solving problems through Design Thinking.</h2>
+                <p>Students collaborate in small teams to tackle real-world challenges. Using rapid prototyping tools and iterative testing, they learn that failure is just a data point on the road to a successful solution.</p>
+            </div>
+            <div class="activity-img-box">
+                <img src="innovation.jpg" alt="Activity 1">
+            </div>
+        </div>
+
+        <div class="activity-row">
+            <div class="activity-num">02</div>
+            <div class="activity-info">
+                <span class="activity-tag">Digital Skills</span>
+                <h2>Deep immersion in Industry-Standard Languages.</h2>
+                <p>From the logic of Python to the structure of Full-Stack Web Development, students dive into the frameworks that power the modern world. We focus on clean code, algorithmic thinking, and professional documentation.</p>
+            </div>
+            <div class="activity-img-box">
+                <img src="page2.jpg" alt="Activity 2">
+            </div>
+        </div>
+
+        <div class="activity-row">
+            <div class="activity-num">03</div>
+            <div class="activity-info">
+                <span class="activity-tag">Global Impact: Tech for Good</span>
+                <h2>Applying technical knowledge to Social Challenges.</h2>
+                <p>Technology is a tool for change. Students work on "Social Innovation" projects, creating digital solutions for non-profits and schools, proving that code can have a measurable, positive impact on society.</p>
+            </div>
+            <div class="activity-img-box">
+                <img src="page3.jpg" alt="Activity 3">
+            </div>
+        </div>
+    </div>
+
+    <!-- ─── FOOTER ─── -->
+    <footer class="footer">
+        <div class="footer-top">
+            <div class="footer-brand">
+                <img src="logo.jpeg" alt="Triple T Academy" class="footer-logo-img">
+                <p>Bridging the gap between technology learning and real-world application — one school at a time.</p>
+                <div class="footer-social">
+                    <a href="https://www.facebook.com/profile.php?id=61566704385898" class="social-btn fb" target="_blank">📘 Facebook</a>
+                    <a href="http://www.youtube.com/@TripleTturntotech" class="social-btn yt" target="_blank">▶ YouTube</a>
+                    <a href="https://www.instagram.com/tripletturntotechacademy/" class="social-btn insta" target="_blank">📷 Instagram</a>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h4>Programs</h4>
+               <ul>
+                    <li><a href="curriculum.html">Curriculum</a></li>
+                    <li><a href="activities.html">Activities</a></li>
+                    <li><a href="certifications.html">Certifications</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="blog.html">Blog</a></li>
+					<li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <ul>
+                    <li><a href="mailto:tripletturntotech@gmail.com">tripletturntotech@gmail.com</a></li>
+                    <li><a href="tel:+96103756814">+961 03 756 814</a></li>
+                    <li><a href="#">Beirut, Lebanon</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <!-- FIX: was "TurnToTech Academy" — corrected to match brand -->
+            <p>&copy; 2026 Triple T Academy. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // ─── SCROLL HIDE/SHOW NAV ───
+        var prevScrollPos = window.pageYOffset;
+        window.onscroll = function () {
+            var currentScrollPos = window.pageYOffset;
+            document.getElementById("nav").style.top = (prevScrollPos > currentScrollPos) ? "0" : "-90px";
+            prevScrollPos = currentScrollPos;
+            closeDrawer();
+        };
+
+        // ─── MODAL ───
+        function openModal()  { document.getElementById('comingSoonModal').classList.add('active'); }
+        function closeModal() { document.getElementById('comingSoonModal').classList.remove('active'); }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') { closeModal(); closeDrawer(); }
+        });
+
+        // ─── MOBILE DRAWER ───
+        function toggleDrawer() {
+            var drawer = document.getElementById('mobileDrawer');
+            drawer.classList.contains('open') ? closeDrawer() : openDrawer();
+        }
+
+        function openDrawer() {
+            document.getElementById('mobileDrawer').classList.add('open');
+            document.getElementById('hamburgerBtn').classList.add('open');
+            document.getElementById('hamburgerBtn').setAttribute('aria-label', 'Close menu');
+        }
+
+        function closeDrawer() {
+            document.getElementById('mobileDrawer').classList.remove('open');
+            document.getElementById('hamburgerBtn').classList.remove('open');
+            document.getElementById('hamburgerBtn').setAttribute('aria-label', 'Open menu');
+        }
+
+        // Close drawer on outside tap
+        document.addEventListener('click', function(e) {
+            var drawer = document.getElementById('mobileDrawer');
+            var btn    = document.getElementById('hamburgerBtn');
+            if (drawer.classList.contains('open') &&
+                !drawer.contains(e.target) &&
+                !btn.contains(e.target)) {
+                closeDrawer();
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>From Blocks to Brackets | Triple T Academy Blog</title>
+    <meta name="keywords" content="Pedagogy, Scratch to Python, Text-based coding, STEM Education, Cognitive Development, Computer Science">
+    <link rel="icon" type="image/jpeg" href="logo.jpeg">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
+    <style>
+        :root {
+            --ttt-dark: #1A1A1A;
+            --ttt-blue: #0072BC;
+            --ttt-green: #7DB942;
+            --ttt-teal-grad: linear-gradient(90deg, #7DB942 0%, #0096D6 100%);
+            --ttt-light: #F8F9FA;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Poppins', sans-serif; color: var(--ttt-dark); background: #fff; overflow-x: hidden; }
+
+        /* ─── NAVIGATION ─── */
+        #nav {
+            position: fixed; top: 0; width: 100%; height: 90px;
+            background: rgba(255,255,255,0.97); backdrop-filter: blur(8px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 5%; transition: top 0.3s, box-shadow 0.3s; z-index: 1000;
+        }
+        .logo-container { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+        .logo-container img { height: 70px; width: auto; object-fit: contain; }
+        .nav-items { list-style: none; display: flex; gap: 30px; }
+        .nav-items a { text-decoration: none; color: #333; font-weight: 600; font-size: 15px; transition: color 0.2s; letter-spacing: 0.2px; }
+        .nav-items a:hover, .nav-items a.active { color: var(--ttt-blue); }
+        .btn-login {
+            background: var(--ttt-teal-grad); color: white; border: none;
+            padding: 11px 26px; border-radius: 25px; font-family: 'Poppins', sans-serif;
+            font-size: 14px; font-weight: 600; cursor: pointer;
+            box-shadow: 0 4px 14px rgba(0,114,188,0.25); transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-login:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(0,114,188,0.35); }
+
+        /* ─── HAMBURGER ─── */
+        .hamburger {
+            display: none; flex-direction: column; justify-content: center; gap: 5px;
+            width: 40px; height: 40px; background: none; border: none;
+            cursor: pointer; padding: 4px; border-radius: 8px; transition: background 0.2s; z-index: 1100;
+        }
+        .hamburger:hover { background: rgba(0,114,188,0.08); }
+        .hamburger span { display: block; width: 24px; height: 2.5px; background: var(--ttt-dark); border-radius: 2px; transition: transform 0.35s cubic-bezier(.4,0,.2,1), opacity 0.2s, width 0.3s; transform-origin: center; }
+        .hamburger.open span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; width: 0; }
+        .hamburger.open span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+
+        /* ─── MOBILE DRAWER ─── */
+        .mobile-drawer {
+            display: none; position: fixed; top: 90px; left: 0; right: 0;
+            background: rgba(255,255,255,0.98); backdrop-filter: blur(12px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.10); z-index: 999;
+            padding: 0; max-height: 0; overflow: hidden;
+            transition: max-height 0.38s cubic-bezier(.4,0,.2,1), padding 0.3s;
+        }
+        .mobile-drawer.open { max-height: 500px; padding: 16px 0 24px; }
+        .mobile-drawer ul { list-style: none; padding: 0 5%; }
+        .mobile-drawer ul li { border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .mobile-drawer ul li:last-child { border-bottom: none; }
+        .mobile-drawer ul li a { display: block; padding: 14px 4px; text-decoration: none; color: #333; font-weight: 600; font-size: 15px; transition: color 0.2s, padding-left 0.2s; }
+        .mobile-drawer ul li a:hover, .mobile-drawer ul li a.active { color: var(--ttt-blue); padding-left: 10px; }
+        .mobile-drawer .drawer-login { margin: 16px 5% 0; }
+        .mobile-drawer .drawer-login button { width: 100%; background: var(--ttt-teal-grad); color: white; border: none; padding: 13px 26px; border-radius: 25px; font-family: 'Poppins', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 14px rgba(0,114,188,0.2); }
+
+        /* ─── ARTICLE HERO ─── */
+        .article-hero {
+            margin-top: 90px; padding: 80px 5% 60px;
+            background: linear-gradient(160deg, #f0f9ff 0%, #f7fbf2 50%, #e8f5ff 100%);
+            text-align: center; position: relative; overflow: hidden;
+        }
+        .article-hero::before {
+            content: ''; position: absolute; width: 500px; height: 500px; border-radius: 50%;
+            background: linear-gradient(135deg, rgba(125,185,66,0.08), rgba(0,150,214,0.08));
+            top: -200px; right: -150px; pointer-events: none;
+        }
+        .article-hero .eyebrow {
+            font-size: 11px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase;
+            color: var(--ttt-blue); margin-bottom: 18px;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+        .article-hero .eyebrow::before, .article-hero .eyebrow::after {
+            content: ''; width: 30px; height: 2px; background: var(--ttt-teal-grad); border-radius: 1px;
+        }
+        .article-hero h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; color: var(--ttt-dark); line-height: 1.2; letter-spacing: -1px; max-width: 850px; margin: 0 auto 28px; }
+        .article-hero h1 span { background: var(--ttt-teal-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .article-meta { display: flex; align-items: center; justify-content: center; gap: 24px; flex-wrap: wrap; font-size: 13px; color: #888; font-weight: 500; }
+        .article-meta span { display: flex; align-items: center; gap: 6px; }
+        .article-meta iconify-icon { color: var(--ttt-blue); }
+        .article-tag { display: inline-block; background: linear-gradient(90deg, rgba(125,185,66,0.12), rgba(0,150,214,0.12)); color: var(--ttt-blue); font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 5px 16px; border-radius: 20px; margin-bottom: 20px; }
+
+        /* ─── ARTICLE BODY ─── */
+        .article-wrapper { max-width: 800px; margin: 0 auto; padding: 60px 5% 80px; }
+        .reveal-section { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; margin-bottom: 48px; }
+        .reveal-section.show-section { opacity: 1; transform: translateY(0); }
+        .section-title { font-size: 1.25rem; font-weight: 800; color: var(--ttt-dark); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 3px solid transparent; border-image: var(--ttt-teal-grad) 1; display: inline-block; }
+        .section-paragraphe { font-size: 15px; color: #444; line-height: 1.9; margin-bottom: 14px; }
+        .section-paragraphe strong { font-weight: 700; color: var(--ttt-dark); }
+        .back-link { display: inline-flex; align-items: center; gap: 8px; color: var(--ttt-blue); font-weight: 600; font-size: 14px; text-decoration: none; margin-bottom: 40px; transition: gap 0.2s; }
+        .back-link:hover { gap: 12px; }
+
+        /* Checklist */
+        .checklist { list-style: none; padding: 0; margin: 16px 0; }
+        .checklist li { font-size: 15px; color: #444; line-height: 1.85; margin-bottom: 20px; padding: 20px 22px; background: var(--ttt-light); border-radius: 14px; border-left: 4px solid var(--ttt-blue); }
+        .checklist li strong { display: block; color: var(--ttt-dark); font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+
+        /* Tip box */
+        .tip-box { background: linear-gradient(135deg, rgba(125,185,66,0.07), rgba(0,150,214,0.07)); border: 1.5px solid rgba(0,114,188,0.12); border-radius: 16px; padding: 28px; margin-top: 10px; }
+        .tip-box .tip-label { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--ttt-blue); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+        .tip-box p { font-size: 14.5px; color: #444; line-height: 1.85; }
+
+        /* ─── COMING SOON MODAL ─── */
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 9999; align-items: center; justify-content: center; }
+        .modal-overlay.active { display: flex; }
+        .modal-box { background: white; border-radius: 20px; padding: 44px 40px; text-align: center; max-width: 380px; width: 90%; position: relative; box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
+        .modal-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: var(--ttt-teal-grad); border-radius: 20px 20px 0 0; }
+        .modal-icon { font-size: 3rem; margin-bottom: 14px; }
+        .modal-box h2 { font-size: 22px; font-weight: 800; color: var(--ttt-dark); margin-bottom: 10px; }
+        .modal-box p { font-size: 14px; color: #666; line-height: 1.7; margin-bottom: 24px; }
+        .modal-close { background: var(--ttt-teal-grad); color: white; border: none; padding: 12px 30px; border-radius: 25px; font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; }
+
+        /* ─── FOOTER ─── */
+        .footer { background: #0F1A2A; color: #ccc; padding: 70px 5% 0; }
+        .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 50px; padding-bottom: 50px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .footer-logo-img { height: 60px; width: auto; object-fit: contain; margin-bottom: 14px; display: block; }
+        .footer-brand p { font-size: 13px; color: #888; line-height: 1.8; max-width: 280px; margin-bottom: 24px; }
+        .footer-social { display: flex; gap: 10px; flex-wrap: wrap; }
+        .social-btn { height: 36px; padding: 0 14px; border-radius: 8px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); display: flex; align-items: center; gap: 6px; color: #ccc; font-family: 'Poppins', sans-serif; font-size: 12px; font-weight: 600; text-decoration: none; transition: background 0.2s, color 0.2s, border-color 0.2s; white-space: nowrap; }
+        .social-btn:hover { color: white; border-color: transparent; }
+        .social-btn.fb:hover { background: #1877F2; }
+        .social-btn.yt:hover { background: #FF0000; }
+        .social-btn.insta:hover { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+        .footer-col h4 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #fff; margin-bottom: 20px; }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 12px; }
+        .footer-col ul li a { text-decoration: none; color: #888; font-size: 13.5px; transition: color 0.2s; }
+        .footer-col ul li a:hover { color: #4DB8FF; }
+        .footer-bottom { padding: 26px 0; text-align: center; }
+        .footer-bottom p { font-size: 13px; color: #888; }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 768px) {
+            .nav-items { display: none; } .btn-login { display: none; }
+            .hamburger { display: flex; } .mobile-drawer { display: block; }
+            .article-hero { padding: 60px 5% 40px; }
+            .footer-top { grid-template-columns: 1fr 1fr; gap: 30px; }
+        }
+        @media (max-width: 480px) { .footer-top { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+    <!-- ─── NAVIGATION ─── -->
+    <header id="nav">
+        <a href="index.html" class="logo-container">
+            <img src="logo.jpeg" alt="Triple T Academy">
+        </a>
+        <ul class="nav-items">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="curriculum.html">Curriculum</a></li>
+            <li><a href="activities.html">Activities</a></li>
+            <li><a href="blog.html" class="active">Blog</a></li>
+            <li><a href="certifications.html">Certifications</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact us</a></li>
+        </ul>
+        <button class="btn-login" onclick="openModal()">Login</button>
+        <button class="hamburger" id="hamburgerBtn" aria-label="Open menu" onclick="toggleDrawer()">
+            <span></span><span></span><span></span>
+        </button>
+    </header>
+
+    <!-- ─── MOBILE DRAWER ─── -->
+    <nav class="mobile-drawer" id="mobileDrawer">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="curriculum.html">Curriculum</a></li>
+            <li><a href="activities.html">Activities</a></li>
+            <li><a href="blog.html" class="active">Blog</a></li>
+            <li><a href="certifications.html">Certifications</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact us</a></li>
+        </ul>
+        <div class="drawer-login">
+            <button onclick="openModal(); closeDrawer();">Login</button>
+        </div>
+    </nav>
+
+    <!-- ─── COMING SOON MODAL ─── -->
+    <div class="modal-overlay" id="comingSoonModal" onclick="if(event.target===this) closeModal()">
+        <div class="modal-box">
+            <div class="modal-icon">🚀</div>
+            <h2>Coming Soon!</h2>
+            <p>Our student portal is currently under development. Stay tuned — it will be available very soon!</p>
+            <button class="modal-close" onclick="closeModal()">Got it!</button>
+        </div>
+    </div>
+
+    <!-- ─── ARTICLE HERO ─── -->
+    <section class="article-hero">
+        <div class="eyebrow">Pedagogy & Methodology</div>
+        <span class="article-tag">Educational Transition</span>
+        <h1>From Blocks to Brackets: Managing the <span>Transition to Text-Based Code</span></h1>
+        <div class="article-meta">
+            <span><iconify-icon icon="ph:user-bold"></iconify-icon> Majida Francis</span>
+            <span><iconify-icon icon="ph:calendar-bold"></iconify-icon> March 3, 2026</span>
+        </div>
+    </section>
+
+    <!-- ─── ARTICLE BODY ─── -->
+    <div class="article-wrapper">
+
+        <a href="blog.html" class="back-link">
+            <iconify-icon icon="ph:arrow-left-bold"></iconify-icon> Back to Blog
+        </a>
+
+        <div class="reveal-section">
+            <p class="section-paragraphe">For many young learners, coding starts with the satisfying "click" of visual blocks. Platforms like <strong>Scratch</strong> have made early logic accessible and fun. But there comes a pivotal moment — usually around age 12 — when students must leave the comfort of blocks for the professional world of <strong>text-based syntax</strong>.</p>
+            <p class="section-paragraphe">This transition isn't just about learning to type; it's a <strong>cognitive leap</strong> from concrete visuals to abstract symbolism. At Triple T Academy, we specialise in making this leap feel like a natural progression rather than a daunting hurdle.</p>
+        </div>
+
+        <div class="reveal-section">
+            <h2 class="section-title">The "Syntax Barrier"</h2>
+            <p class="section-paragraphe">In visual coding, it's impossible to have a "syntax error." If the blocks fit, the code runs. In languages like <strong>Python</strong>, a single missing colon can stop everything. This requires a shift in mindset: moving from general logic to high-level precision. We teach students that these "errors" aren't failures — they are the first step in learning professional-grade debugging.</p>
+        </div>
+
+        <div class="reveal-section">
+            <h2 class="section-title">Why Age 12?</h2>
+            <p class="section-paragraphe">Developmentally, 12 is the "sweet spot." This is when children enter the stage of <strong>formal operations</strong>, allowing them to think about abstract concepts without needing a physical or visual representation. By introducing Python at this age, we align our curriculum with their brain's natural readiness for complex logic.</p>
+        </div>
+
+        <div class="reveal-section">
+            <h2 class="section-title">Our Transition Strategy</h2>
+            <ul class="checklist">
+                <li>
+                    <strong>1. Bridge the Logic</strong>
+                    We start by showing students how a visual "Repeat 10" block is identical to a Python <code>for i in range(10):</code> loop. Mapping the known to the unknown builds instant confidence.
+                </li>
+                <li>
+                    <strong>2. Focus on "Readability"</strong>
+                    We choose Python as the first text-based language because its syntax reads like English. It lowers the barrier to entry while still providing the power of a professional tool.
+                </li>
+                <li>
+                    <strong>3. Error Literacy</strong>
+                    We empower students to read and interpret error messages. Turning a <code>SyntaxError</code> into a solvable puzzle removes the frustration of the transition.
+                </li>
+            </ul>
+        </div>
+
+        <div class="reveal-section">
+            <h2 class="section-title">Conclusion</h2>
+            <p class="section-paragraphe">Transitioning from blocks to brackets is a rite of passage. It marks the moment a student stops playing with a toy and starts mastering a craft. By focusing on the cognitive needs of the learner, we ensure they move into text-based coding with curiosity and resilience.</p>
+            <div class="tip-box">
+                <div class="tip-label"><iconify-icon icon="ph:chalkboard-teacher-bold"></iconify-icon> For Educators</div>
+                <p>The next time a student panics at a red error message, pause before fixing it. Ask them: <strong>"What is Python trying to tell you?"</strong> That single habit — reading errors rather than fearing them — is the foundation of every great developer's problem-solving instinct.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ─── FOOTER ─── -->
+    <footer class="footer">
+        <div class="footer-top">
+            <div class="footer-brand">
+                <img src="logo.jpeg" alt="Triple T Academy" class="footer-logo-img">
+                <p>Bridging the gap between technology learning and real-world application — one school at a time.</p>
+                <div class="footer-social">
+                    <a href="https://www.facebook.com/profile.php?id=61566704385898" class="social-btn fb" target="_blank">📘 Facebook</a>
+                    <a href="http://www.youtube.com/@TripleTturntotech" class="social-btn yt" target="_blank">▶ YouTube</a>
+                    <a href="https://www.instagram.com/tripletturntotechacademy/" class="social-btn insta" target="_blank">📷 Instagram</a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Programs</h4>
+                <ul>
+                    <li><a href="curriculum.html">Curriculum</a></li>
+                    <li><a href="activities.html">Activities</a></li>
+                    <li><a href="certifications.html">Certifications</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <ul>
+                    <li><a href="mailto:tripletturntotech@gmail.com">tripletturntotech@gmail.com</a></li>
+                    <li><a href="tel:+96103756814">+961 03 756 814</a></li>
+                    <li><a href="#">Beirut, Lebanon</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Triple T Academy. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // ─── SCROLL HIDE/SHOW NAV ───
+        var prevScrollPos = window.pageYOffset;
+        window.onscroll = function () {
+            var currentScrollPos = window.pageYOffset;
+            document.getElementById("nav").style.top = (prevScrollPos > currentScrollPos) ? "0" : "-90px";
+            prevScrollPos = currentScrollPos;
+            closeDrawer();
+        };
+
+        // ─── MODAL ───
+        function openModal()  { document.getElementById('comingSoonModal').classList.add('active'); }
+        function closeModal() { document.getElementById('comingSoonModal').classList.remove('active'); }
+        document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { closeModal(); closeDrawer(); } });
+
+        // ─── MOBILE DRAWER ───
+        function toggleDrawer() { var d = document.getElementById('mobileDrawer'); d.classList.contains('open') ? closeDrawer() : openDrawer(); }
+        function openDrawer()  { document.getElementById('mobileDrawer').classList.add('open'); document.getElementById('hamburgerBtn').classList.add('open'); document.getElementById('hamburgerBtn').setAttribute('aria-label','Close menu'); }
+        function closeDrawer() { document.getElementById('mobileDrawer').classList.remove('open'); document.getElementById('hamburgerBtn').classList.remove('open'); document.getElementById('hamburgerBtn').setAttribute('aria-label','Open menu'); }
+        document.addEventListener('click', function(e) {
+            var d = document.getElementById('mobileDrawer'); var b = document.getElementById('hamburgerBtn');
+            if (d.classList.contains('open') && !d.contains(e.target) && !b.contains(e.target)) closeDrawer();
+        });
+
+        // ─── SCROLL REVEAL ───
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('show-section'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal-section').forEach(s => observer.observe(s));
+    </script>
+</body>
+</html>

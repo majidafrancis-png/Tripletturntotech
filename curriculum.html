@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curriculum | Triple T Academy</title>
+    <!-- FIX 1: was type=imagejpeg (missing slash) -->
+    <link rel="icon" type="image/jpeg" href="logo.jpeg">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ttt-dark: #1A1A1A;
+            --ttt-blue: #0072BC;
+            --ttt-green: #7DB942;
+            --ttt-teal-grad: linear-gradient(90deg, #7DB942 0%, #0096D6 100%);
+            --ttt-light: #F8F9FA;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--ttt-dark);
+            background-color: #fff;
+        }
+
+        /* ─── NAVIGATION ─── */
+        #nav {
+            position: fixed;
+            top: 0; width: 100%; height: 90px;
+            background: rgba(255,255,255,0.97);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 5%;
+            /* FIX 2: transition covers both top and box-shadow */
+            transition: top 0.3s, box-shadow 0.3s;
+            z-index: 1000;
+        }
+
+        .logo-container {
+            display: flex; align-items: center; gap: 14px;
+            text-decoration: none;
+        }
+
+        .logo-container img {
+            height: 70px; width: auto; object-fit: contain;
+        }
+
+        .logo-text { line-height: 1.2; }
+
+        .logo-name {
+            font-size: 14px; font-weight: 800;
+            color: var(--ttt-dark); letter-spacing: 0.3px;
+        }
+
+        .logo-name .turn { color: var(--ttt-blue); }
+        .logo-name .tech { color: var(--ttt-green); }
+
+        .logo-tagline {
+            font-size: 10px; font-weight: 400; color: #888;
+            letter-spacing: 2px; text-transform: uppercase;
+        }
+
+        .nav-items {
+            list-style: none; display: flex; gap: 30px;
+        }
+
+        .nav-items a {
+            text-decoration: none; color: #333;
+            font-weight: 600; font-size: 15px; transition: color 0.2s;
+        }
+
+        .nav-items a:hover { color: var(--ttt-blue); }
+        .nav-items a.active { color: var(--ttt-blue); }
+
+        .btn-login {
+            background: var(--ttt-teal-grad);
+            color: white; border: none;
+            padding: 11px 26px; border-radius: 25px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px; font-weight: 600; cursor: pointer;
+            box-shadow: 0 4px 14px rgba(0,114,188,0.25);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(0,114,188,0.35);
+        }
+
+        /* ─── HAMBURGER BUTTON ─── */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            gap: 5px;
+            width: 40px; height: 40px;
+            background: none; border: none;
+            cursor: pointer; padding: 4px;
+            border-radius: 8px;
+            transition: background 0.2s;
+            z-index: 1100;
+        }
+
+        .hamburger:hover { background: rgba(0,114,188,0.08); }
+
+        .hamburger span {
+            display: block;
+            width: 24px; height: 2.5px;
+            background: var(--ttt-dark);
+            border-radius: 2px;
+            transition: transform 0.35s cubic-bezier(.4,0,.2,1),
+                        opacity 0.2s,
+                        width 0.3s;
+            transform-origin: center;
+        }
+
+        /* Animate to X when open */
+        .hamburger.open span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; width: 0; }
+        .hamburger.open span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+
+        /* ─── MOBILE DRAWER ─── */
+        .mobile-drawer {
+            display: none;
+            position: fixed;
+            top: 90px; left: 0; right: 0;
+            background: rgba(255,255,255,0.98);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.10);
+            z-index: 999;
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.38s cubic-bezier(.4,0,.2,1),
+                        padding 0.3s;
+        }
+
+        .mobile-drawer.open {
+            max-height: 500px;
+            padding: 16px 0 24px;
+        }
+
+        .mobile-drawer ul {
+            list-style: none;
+            padding: 0 5%;
+        }
+
+        .mobile-drawer ul li {
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .mobile-drawer ul li:last-child { border-bottom: none; }
+
+        .mobile-drawer ul li a {
+            display: block;
+            padding: 14px 4px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            font-size: 15px;
+            transition: color 0.2s, padding-left 0.2s;
+        }
+
+        .mobile-drawer ul li a:hover,
+        .mobile-drawer ul li a.active {
+            color: var(--ttt-blue);
+            padding-left: 10px;
+        }
+
+        .mobile-drawer .drawer-login {
+            margin: 16px 5% 0;
+        }
+
+        .mobile-drawer .drawer-login button {
+            width: 100%;
+            background: var(--ttt-teal-grad);
+            color: white; border: none;
+            padding: 13px 26px; border-radius: 25px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px; font-weight: 600; cursor: pointer;
+            box-shadow: 0 4px 14px rgba(0,114,188,0.2);
+        }
+
+        /* ─── COMING SOON MODAL ─── */
+        .modal-overlay {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,0.45); z-index: 9999;
+            align-items: center; justify-content: center;
+        }
+
+        .modal-overlay.active { display: flex; }
+
+        .modal-box {
+            background: white; border-radius: 20px;
+            padding: 44px 40px; text-align: center;
+            max-width: 380px; width: 90%; position: relative;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+
+        .modal-box::before {
+            content: ''; position: absolute;
+            top: 0; left: 0; right: 0; height: 5px;
+            background: var(--ttt-teal-grad);
+            border-radius: 20px 20px 0 0;
+        }
+
+        .modal-icon { font-size: 3rem; margin-bottom: 14px; }
+
+        .modal-box h2 {
+            font-size: 22px; font-weight: 800;
+            color: var(--ttt-dark); margin-bottom: 10px;
+        }
+
+        .modal-box p {
+            font-size: 14px; color: #666;
+            line-height: 1.7; margin-bottom: 24px;
+        }
+
+        .modal-close {
+            background: var(--ttt-teal-grad); color: white; border: none;
+            padding: 12px 30px; border-radius: 25px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px; font-weight: 600; cursor: pointer;
+        }
+
+        /* ─── HERO ─── */
+        .featured-curriculum {
+            min-height: 90vh;
+            background: linear-gradient(160deg, #f0f9ff 0%, #f7fbf2 50%, #e8f5ff 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 50px;
+            margin-top: 90px;
+            padding: 80px 5%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .featured-curriculum::before {
+            content: ''; position: absolute;
+            width: 500px; height: 500px; border-radius: 50%;
+            background: linear-gradient(135deg, rgba(125,185,66,0.1), rgba(0,150,214,0.1));
+            top: -200px; right: -150px; pointer-events: none;
+        }
+
+        .curriculum-text { flex: 1; }
+
+        .curriculum-text .eyebrow {
+            font-size: 11px; font-weight: 600;
+            letter-spacing: 3px; text-transform: uppercase;
+            color: var(--ttt-blue); margin-bottom: 14px;
+            display: flex; align-items: center; gap: 10px;
+        }
+
+        .curriculum-text .eyebrow::before {
+            content: ''; width: 30px; height: 2px;
+            background: var(--ttt-teal-grad); border-radius: 1px;
+        }
+
+        .curriculum-text h1 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800; color: var(--ttt-dark);
+            line-height: 1.1; letter-spacing: -1px; margin-bottom: 18px;
+        }
+
+        .curriculum-text h1 span {
+            background: linear-gradient(90deg, #7DB942, #0096D6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .curriculum-text p {
+            font-size: 15px; color: #555;
+            line-height: 1.8; max-width: 480px;
+        }
+
+        .curriculum-image { flex: 1; text-align: center; }
+
+        .curriculum-image img {
+            width: 100%; max-width: 500px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+
+        /* ─── PROGRAM GRID ─── */
+        .card-container { padding: 60px 5%; }
+
+        .program-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .program-grid .program-row:nth-child(4) { grid-column: 1 / 2; }
+        .program-grid .program-row:nth-child(5) { grid-column: 2 / 3; }
+
+        .program-row {
+            display: flex;
+            background: #fff; border-radius: 20px;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.04);
+            overflow: hidden;
+            transition: box-shadow 0.3s, transform 0.3s;
+        }
+
+        .program-row:hover {
+            box-shadow: 0 10px 50px rgba(0,0,0,0.09);
+            transform: translateY(-6px);
+        }
+
+        .program-card {
+            color: white; padding: 40px 28px;
+            border-radius: 20px;
+            width: 100%; min-width: unset;
+            text-align: center;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center; gap: 12px;
+        }
+
+        .program-card.explorers { background: linear-gradient(135deg, #7DB942, #0096D6); }
+        .program-card.builders  { background: linear-gradient(135deg, #0096D6, #0052A5); }
+        .program-card.creators  { background: linear-gradient(135deg, #00B4A0, #0072BC); }
+        .program-card.devs      { background: linear-gradient(135deg, #5B6FE0, #0072BC); }
+        .program-card.innovators{ background: linear-gradient(135deg, #1A1A1A, #0072BC); }
+
+        .program-card .age-badge {
+            background: rgba(255,255,255,0.2);
+            border-radius: 20px; padding: 5px 16px;
+            font-size: 12px; font-weight: 600; letter-spacing: 1px;
+        }
+
+        .program-card h2 {
+            font-size: 20px; font-weight: 700; line-height: 1.3; margin: 0;
+        }
+
+        .level-section {
+            display: flex; flex-grow: 1;
+            align-items: center; gap: 10px;
+            flex-wrap: nowrap;
+        }
+
+        .level-box {
+            background: var(--ttt-light);
+            border: 1.5px solid #eee;
+            padding: 18px 16px;
+            border-radius: 14px;
+            flex: 1;
+            text-align: center;
+            transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+            cursor: default;
+        }
+
+        .level-box:hover {
+            border-color: var(--ttt-blue);
+            background: #fff;
+            box-shadow: 0 4px 16px rgba(0,114,188,0.1);
+        }
+
+        .level-box h3 {
+            color: var(--ttt-blue);
+            font-size: 14px; font-weight: 700; margin: 0;
+        }
+
+        .arrow-icon {
+            font-size: 20px; color: #ccc;
+            flex-shrink: 0; font-weight: 300;
+        }
+
+        /* ─── FOOTER ─── */
+        .footer { background: #0F1A2A; color: #ccc; padding: 70px 5% 0; }
+
+        .footer-top {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 50px; padding-bottom: 50px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .footer-logo-img {
+            height: 60px; width: auto;
+            object-fit: contain; margin-bottom: 14px; display: block;
+        }
+
+        .footer-brand p {
+            font-size: 13px; color: #888; line-height: 1.8;
+            max-width: 280px; margin-bottom: 24px;
+        }
+
+        .footer-social { display: flex; gap: 10px; flex-wrap: wrap; }
+
+        .social-btn {
+            height: 36px; padding: 0 14px; border-radius: 8px;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.12);
+            display: flex; align-items: center; gap: 6px;
+            color: #ccc; font-family: 'Poppins', sans-serif;
+            font-size: 12px; font-weight: 600; text-decoration: none;
+            transition: background 0.2s, color 0.2s, border-color 0.2s;
+            white-space: nowrap;
+        }
+
+        .social-btn:hover { color: white; border-color: transparent; }
+        .social-btn.fb:hover    { background: #1877F2; }
+        .social-btn.yt:hover    { background: #FF0000; }
+        .social-btn.insta:hover { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+
+        .footer-col h4 {
+            font-size: 12px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 2px; color: #fff; margin-bottom: 20px;
+        }
+
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 12px; }
+
+        .footer-col ul li a {
+            text-decoration: none; color: #888; font-size: 13.5px;
+            transition: color 0.2s;
+        }
+
+        .footer-col ul li a:hover { color: #4DB8FF; }
+
+        .footer-newsletter {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 14px; padding: 28px; margin-top: 40px;
+            display: flex; align-items: center;
+            justify-content: space-between; gap: 20px; flex-wrap: wrap;
+        }
+
+        .footer-newsletter-text h4 {
+            font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 4px;
+        }
+
+        .footer-newsletter-text p { font-size: 12.5px; color: #888; }
+
+        .footer-newsletter-form { display: flex; gap: 10px; flex-wrap: wrap; }
+
+        .footer-newsletter-form input {
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 25px; padding: 10px 18px; color: #fff;
+            font-family: 'Poppins', sans-serif; font-size: 13px;
+            outline: none; width: 220px; transition: border-color 0.2s;
+        }
+
+        .footer-newsletter-form input::placeholder { color: #666; }
+        .footer-newsletter-form input:focus { border-color: #0096D6; }
+
+        .footer-newsletter-form button {
+            background: linear-gradient(90deg, #7DB942, #0096D6);
+            color: white; border: none; padding: 10px 22px;
+            border-radius: 25px; font-family: 'Poppins', sans-serif;
+            font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap;
+        }
+
+        .footer-bottom {
+            padding: 26px 0; text-align: center;
+        }
+
+        .footer-bottom p {
+            font-size: 13px; font-weight: 400; color: #888;
+        }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 900px) {
+            .program-grid { grid-template-columns: repeat(2, 1fr); }
+            .program-grid .program-row:nth-child(4),
+            .program-grid .program-row:nth-child(5) { grid-column: auto; }
+        }
+
+        @media (max-width: 768px) {
+            /* Hide desktop nav links & login, show hamburger */
+            .nav-items { display: none; }
+            .btn-login  { display: none; }
+            .hamburger  { display: flex; }
+
+            /* Show mobile drawer when open */
+            .mobile-drawer { display: block; }
+
+            .featured-curriculum { flex-direction: column; padding: 60px 5%; }
+            .curriculum-image { display: none; }
+            .program-grid { grid-template-columns: 1fr; }
+            .footer-top { grid-template-columns: 1fr 1fr; gap: 30px; }
+            .footer-newsletter { flex-direction: column; align-items: flex-start; }
+            .footer-newsletter-form input { width: 100%; }
+        }
+
+        @media (max-width: 480px) {
+            .footer-top { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ─── NAVIGATION ─── -->
+    <header id="nav">
+        <a href="index.html" class="logo-container">
+            <img src="logo.jpeg" alt="Triple T Academy">
+        </a>
+
+        <!-- Desktop nav -->
+        <ul class="nav-items">
+		<li><a href="index.html">Home</a></li>
+            <li><a href="curriculum.html" class="active">Curriculum</a></li>
+            <li><a href="activities.html">Activities</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="certifications.html">Certifications</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact us</a></li>
+        </ul>
+
+        <!-- Desktop login -->
+        <button class="btn-login" onclick="openModal()">Login</button>
+
+        <!-- Hamburger (mobile only) -->
+        <button class="hamburger" id="hamburgerBtn" aria-label="Open menu" onclick="toggleDrawer()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </header>
+
+    <!-- ─── MOBILE DRAWER ─── -->
+    <nav class="mobile-drawer" id="mobileDrawer">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="curriculum.html" class="active">Curriculum</a></li>
+            <li><a href="activities.html">Activities</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="certifications.html">Certifications</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact us</a></li>
+        </ul>
+        <div class="drawer-login">
+            <button onclick="openModal(); closeDrawer();">Login</button>
+        </div>
+    </nav>
+
+    <!-- ─── COMING SOON MODAL ─── -->
+    <div class="modal-overlay" id="comingSoonModal" onclick="if(event.target===this) closeModal()">
+        <div class="modal-box">
+            <div class="modal-icon">🚀</div>
+            <h2>Coming Soon!</h2>
+            <p>Our student portal is currently under development. Stay tuned — it will be available very soon!</p>
+            <button class="modal-close" onclick="closeModal()">Got it!</button>
+        </div>
+    </div>
+
+    <!-- ─── HERO ─── -->
+    <!-- FIX 3: was <<section (double angle bracket) -->
+    <section class="featured-curriculum">
+        <div class="curriculum-text">
+            <div class="eyebrow">Our Programs</div>
+            <h1>CURRICULAR <br><span>PROGRAMS</span></h1>
+            <p>For over a decade, we have been dedicated to crafting meticulously designed curriculum programs tailored to the diverse learning needs of our students. Aligned with STEAM principles, we foster critical thinking and innovation.</p>
+        </div>
+        <div class="curriculum-image">
+            <img src="Curriculum.jpg" alt="Students learning">
+        </div>
+    </section>
+
+    <!-- ─── PROGRAM GRID ─── -->
+    <div class="card-container">
+        <div class="program-grid">
+
+            <div class="program-row">
+                <div class="program-card explorers">
+                    <span class="age-badge">Ages 6+</span>
+                    <h2>Tech Explorers</h2>
+                </div>
+            </div>
+
+            <div class="program-row">
+                <div class="program-card builders">
+                    <span class="age-badge">Ages 8+</span>
+                    <h2>Tech Builders</h2>
+                </div>
+            </div>
+
+            <div class="program-row">
+                <div class="program-card creators">
+                    <span class="age-badge">Ages 10+</span>
+                    <h2>Tech Creators</h2>
+                </div>
+            </div>
+
+            <div class="program-row">
+                <div class="program-card devs">
+                    <span class="age-badge">Ages 12+</span>
+                    <h2>Tech Developers</h2>
+                </div>
+            </div>
+
+            <div class="program-row">
+                <div class="program-card innovators">
+                    <span class="age-badge">Ages 13+</span>
+                    <h2>Tech Innovators</h2>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ─── FOOTER ─── -->
+    <footer class="footer">
+        <div class="footer-top">
+            <div class="footer-brand">
+                <img src="logo.jpeg" alt="Triple T Academy" class="footer-logo-img">
+                <p>Bridging the gap between technology learning and real-world application — one school at a time.</p>
+                <div class="footer-social">
+                    <a href="https://www.facebook.com/profile.php?id=61566704385898" class="social-btn fb" target="_blank">📘 Facebook</a>
+                    <a href="http://www.youtube.com/@TripleTturntotech" class="social-btn yt" target="_blank">▶ YouTube</a>
+                    <a href="https://www.instagram.com/tripletturntotechacademy/" class="social-btn insta" target="_blank">📷 Instagram</a>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h4>Programs</h4>
+                 <ul>
+                    <li><a href="curriculum.html">Curriculum</a></li>
+                    <li><a href="activities.html">Activities</a></li>
+                    <li><a href="certifications.html">Certifications</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Company</h4>
+                <ul>
+                     <li><a href="blog.html">Blog</a></li>
+					 <li><a href="about.html">About Us</a></li>
+                     <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <ul>
+                    <li><a href="mailto:tripletturntotech@gmail.com">tripletturntotech@gmail.com</a></li>
+                    <li><a href="tel:+96103756814">+961 03 756 814</a></li>
+                    <li><a href="#">Beirut, Lebanon</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <!-- FIX 4: was "TurnToTech Academy" — corrected to match brand -->
+            <p>&copy; 2026 Triple T Academy. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // ─── SCROLL HIDE/SHOW NAV ───
+        var prevScrollPos = window.pageYOffset;
+        window.onscroll = function () {
+            var currentScrollPos = window.pageYOffset;
+            // FIX 5: was -80px but nav is 90px tall — now correctly hides fully
+            document.getElementById("nav").style.top = (prevScrollPos > currentScrollPos) ? "0" : "-90px";
+            prevScrollPos = currentScrollPos;
+            // Close drawer on scroll
+            closeDrawer();
+        };
+
+        // ─── MODAL ───
+        function openModal()  { document.getElementById('comingSoonModal').classList.add('active'); }
+        function closeModal() { document.getElementById('comingSoonModal').classList.remove('active'); }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+                closeDrawer();
+            }
+        });
+
+        // ─── MOBILE DRAWER ───
+        function toggleDrawer() {
+            var drawer = document.getElementById('mobileDrawer');
+            var btn    = document.getElementById('hamburgerBtn');
+            var isOpen = drawer.classList.contains('open');
+            if (isOpen) { closeDrawer(); } else { openDrawer(); }
+        }
+
+        function openDrawer() {
+            document.getElementById('mobileDrawer').classList.add('open');
+            document.getElementById('hamburgerBtn').classList.add('open');
+            document.getElementById('hamburgerBtn').setAttribute('aria-label', 'Close menu');
+        }
+
+        function closeDrawer() {
+            document.getElementById('mobileDrawer').classList.remove('open');
+            document.getElementById('hamburgerBtn').classList.remove('open');
+            document.getElementById('hamburgerBtn').setAttribute('aria-label', 'Open menu');
+        }
+
+        // Close drawer if user taps outside of it
+        document.addEventListener('click', function(e) {
+            var drawer = document.getElementById('mobileDrawer');
+            var btn    = document.getElementById('hamburgerBtn');
+            if (drawer.classList.contains('open') &&
+                !drawer.contains(e.target) &&
+                !btn.contains(e.target)) {
+                closeDrawer();
+            }
+        });
+    </script>
+
+</body>
+</html>
