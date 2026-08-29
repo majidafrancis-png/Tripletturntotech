@@ -320,25 +320,44 @@
             font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer;
         }
 
-        /* ─── FOOTER ─── */
+          /* ─── FOOTER ─── */
         .footer { background: #0F1A2A; color: #ccc; padding: 70px 5% 0; }
+
         .footer-top {
-            display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
             gap: 50px; padding-bottom: 50px;
             border-bottom: 1px solid rgba(255,255,255,0.08);
         }
-        .footer-logo-img { height: 60px; width: auto; object-fit: contain; margin-bottom: 14px; display: block; }
-        .footer-brand p { font-size: 13px; color: #888; line-height: 1.8; max-width: 280px; margin-bottom: 24px; }
-        .footer-social { display: flex; gap: 10px; flex-wrap: wrap; }
-        .social-btn {
-            height: 36px; padding: 0 14px; border-radius: 8px;
-            background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
-            display: flex; align-items: center; gap: 6px; color: #ccc;
-            font-family: 'Poppins', sans-serif; font-size: 12px; font-weight: 600;
-            text-decoration: none; transition: background 0.2s, color 0.2s, border-color 0.2s;
-            white-space: nowrap;
+
+        .footer-logo-img {
+            height: 60px; width: auto;
+            object-fit: contain; margin-bottom: 14px; display: block;
         }
-        .social-btn:hover { color: white; border-color: transparent; }
+
+        .footer-brand p {
+            font-size: 13px; color: #888; line-height: 1.8;
+            max-width: 280px; margin-bottom: 24px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+           .footer-social { display: flex; gap: 10px; flex-wrap: wrap; }
+ 
+        /* Social icon buttons — official brand colors */
+        .social-btn {
+            width: 40px; height: 40px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.12);
+            display: flex; align-items: center; justify-content: center;
+            text-decoration: none;
+            transition: background 0.2s, transform 0.2s, border-color 0.2s;
+            flex-shrink: 0;
+        }
+ 
+        .social-btn svg { width: 20px; height: 20px; display: block; }
+ 
+        .social-btn:hover { transform: translateY(-2px); border-color: transparent; }
         .social-btn.fb:hover    { background: #1877F2; }
         .social-btn.yt:hover    { background: #FF0000; }
         .social-btn.insta:hover { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
@@ -346,14 +365,31 @@
         .footer-col h4 {
             font-size: 12px; font-weight: 700; text-transform: uppercase;
             letter-spacing: 2px; color: #fff; margin-bottom: 20px;
+            font-family: 'Poppins', sans-serif;
         }
+
         .footer-col ul { list-style: none; }
         .footer-col ul li { margin-bottom: 12px; }
-        .footer-col ul li a { text-decoration: none; color: #888; font-size: 13.5px; transition: color 0.2s; }
+
+        .footer-col ul li a {
+            text-decoration: none; color: #888;
+            font-size: 13.5px; font-family: 'Poppins', sans-serif;
+            transition: color 0.2s;
+        }
+
         .footer-col ul li a:hover { color: #4DB8FF; }
 
-        .footer-bottom { padding: 26px 0; text-align: center; }
-        .footer-bottom p { font-size: 13px; color: #888; }
+
+        /* Copyright — centered, same font/size as rest of footer */
+        .footer-bottom {
+            padding: 26px 0;
+            text-align: center;
+        }
+
+        .footer-bottom p {
+            font-size: 13px; font-family: 'Poppins', sans-serif;
+            font-weight: 400; color: #888;
+        }
 
         /* ─── RESPONSIVE ─── */
         @media (max-width: 768px) {
@@ -488,25 +524,43 @@
         </div>
     </div>
 
-    <!-- ─── FOOTER ─── -->
-    <footer class="footer">
+   <!-- ─── FOOTER ─── -->
+     <footer class="footer">
+
         <div class="footer-top">
+
             <div class="footer-brand">
                 <img src="logo.jpeg" alt="Triple T Academy" class="footer-logo-img">
                 <p>Bridging the gap between technology learning and real-world application — one school at a time.</p>
                 <div class="footer-social">
-                    <a href="https://www.facebook.com/profile.php?id=61566704385898" class="social-btn fb" target="_blank">📘 Facebook</a>
-                    <a href="http://www.youtube.com/@TripleTturntotech" class="social-btn yt" target="_blank">▶ YouTube</a>
-                    <a href="https://www.instagram.com/tripletturntotechacademy/" class="social-btn insta" target="_blank">📷 Instagram</a>
+                    <!-- Facebook -->
+                    <a href="https://www.facebook.com/profile.php?id=61566704385898" class="social-btn fb" target="_blank" aria-label="Facebook">
+                        <svg viewBox="0 0 24 24" fill="#ffffff" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.313 0 2.686.236 2.686.236v2.97h-1.513c-1.491 0-1.956.93-1.956 1.883v2.271h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/>
+                        </svg>
+                    </a>
+                    <!-- YouTube -->
+                    <a href="http://www.youtube.com/@TripleTturntotech" class="social-btn yt" target="_blank" aria-label="YouTube">
+                        <svg viewBox="0 0 24 24" fill="#ffffff" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                        </svg>
+                    </a>
+                    <!-- Instagram -->
+                    <a href="https://www.instagram.com/tripletturntotechacademy/" class="social-btn insta" target="_blank" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24" fill="#ffffff" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                        </svg>
+                    </a>
                 </div>
             </div>
 
             <div class="footer-col">
                 <h4>Programs</h4>
-               <ul>
+                <ul>
                     <li><a href="curriculum.html">Curriculum</a></li>
                     <li><a href="activities.html">Activities</a></li>
-                    <li><a href="certifications.html">Certifications</a></li>
+					<li><a href="certifications.html">Certifications</a></li>
+					
                 </ul>
             </div>
 
@@ -514,11 +568,10 @@
                 <h4>Company</h4>
                 <ul>
                     <li><a href="blog.html">Blog</a></li>
-					<li><a href="about.html">About Us</a></li>
-                    <li><a href="contact.html">Contact</a></li>
+					<li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
                 </ul>
             </div>
-
             <div class="footer-col">
                 <h4>Contact</h4>
                 <ul>
@@ -527,11 +580,14 @@
                     <li><a href="#">Beirut, Lebanon</a></li>
                 </ul>
             </div>
+
         </div>
+
+             <!-- Centered copyright — Poppins, consistent size -->
         <div class="footer-bottom">
-            <!-- FIX: was "TurnToTech Academy" — corrected to match brand -->
-            <p>&copy; 2026 Triple T Academy. All rights reserved.</p>
+            <p>&copy; 2026 TurnToTech Academy. All rights reserved.</p>
         </div>
+
     </footer>
 
     <script>
